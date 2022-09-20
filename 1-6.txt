@@ -1,0 +1,20 @@
+
+1. A tipagem estática é quando sua verificação de tipo ocorre em tempo de compilação.A digitação dinâmica é quando a verificação de tipo ocorre no tempo de execução. 
+
+2.Possibilidade de mais erros descobertos durante a execução.
+
+3. 
+Em JavaScript, é possivel somar objetos do tipo sting e num como citado no exemplo:
+
+ex: const num = "10";
+    const operacao = num + 10; 
+    Resultado: 1010
+Apresentando um erro durante a execução.
+
+
+4. Pois possibilita a conversão de tipos em um prorgama sem que o progamador faça essa conversão manualmente.
+
+5. Quando nao é possivel inferir um tipo de variavel no TypeScript ele atribui automaticamente a ela o tipo any.
+
+6.Não.
+
