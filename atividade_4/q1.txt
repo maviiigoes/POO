@@ -1,0 +1,1 @@
+SIm, pois não será possivel aumentar o valor quando o método for chamado.
