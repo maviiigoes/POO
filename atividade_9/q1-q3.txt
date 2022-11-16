@@ -1,0 +1,12 @@
+1. Podemos instanciar classes abstratas? Justifique.
+    R: As classes abstratas representam  conceitos abstratos, portanto não podem ser instanciadas.
+
+2.Explique o que é necessário para que a compilação da ClasseConcreta ocorra sem erros:
+    R: A implementação de seus métodos .
+
+3.Se uma classe que herda de uma abstrata e não implementa os seus métodos, o que ocorre?
+    R: Não será compilado.
+
+
+
+
