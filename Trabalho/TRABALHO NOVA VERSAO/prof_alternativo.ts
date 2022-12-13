@@ -1,16 +1,16 @@
 /* import { isString } from "@vue/shared"; */
 import { isString } from "@vue/shared";
-import {  AlunoNaoEncontradoError, AlunoJaCadastradoError,ProfessorJaCadastradoErrror, id_userError,ValorInvalidoError,HorarioInvalidoError,codProfessorError } from "./exececoes";
+import {  AlunoNaoEncontradoError, AlunoJaCadastradoError,ProfessorJaCadastradoErrror, id_userError,ValorInvalidoError,HorarioInvalidoError,codProfessorError,AtividadeJaCadastradaError,AtividadeNaoEncontradaError } from "./exececoes";
 
 export class User {
     private nome: string;
     private id_user: string;
-    public carga_horaria: number;
+    public carga_horaria_min: number;
     
-    constructor(nome: string,  id_user: string, carga_horaria: number ) {
+    constructor(nome: string,  id_user: string, carga_horaria_min: number ) {
         this.id_user = id_user;
         this.nome = nome;
-        this.carga_horaria = carga_horaria;
+        this.carga_horaria_min = carga_horaria_min;
         
     }
 
@@ -24,15 +24,17 @@ export class User {
     TempoDePermanencia(horario_entrada:number,horario_saida:number):void{
         this.validarValor(horario_entrada);
         this.validarValor(horario_saida);
+        this.VerificarHorario(horario_entrada,horario_saida)
         let total = horario_saida - horario_entrada
-        this.carga_horaria = total
+        this.carga_horaria_min = total
     }
 
     qttAulasDia(horario_entrada:number,horario_saida:number):void{
         this.validarValor(horario_entrada);
         this.validarValor(horario_saida);
+        this.VerificarHorario(horario_entrada,horario_saida)
         let total = horario_saida - horario_entrada
-        this.carga_horaria = total/60
+        this.carga_horaria_min = total/60
     }
 
 
@@ -54,14 +56,10 @@ export class User {
 }
 
 
-
-
 export class Aluno extends User {    
-   /*   public nota: number  ;
-        faltas:number
- */
-   constructor(nome: string, id_user: string,carga_horaria:number) {
-       super(nome, id_user,carga_horaria);
+   
+   constructor(nome: string, id_user: string,carga_horaria_min:number) {
+       super(nome, id_user,carga_horaria_min);
         
    } 
 
@@ -76,28 +74,21 @@ export class Aluno extends User {
 
    FrequenciadeAulas(qttAulasDiaria:number):number{
     let minutosTotais = qttAulasDiaria *60;
-    let qttAulasAssistidas = minutosTotais - this.carga_horaria;
+    let qttAulasAssistidas = minutosTotais - this.carga_horaria_min;
     let qttfaltas = qttAulasAssistidas/60;
-    return qttfaltas;
+    return Math.ceil(qttfaltas);
 
    }
 
 }
 
 
-
-
- interface IAtividade{
-     VizualizarAtividades():any;  
-} 
-
-export class Professor  extends User  /* implements IAtividade */{
+export class Professor  extends User{
     
-
     private cod_prof: string;
     
-    constructor(cod_prof:string,  nome: string, id_user: string, carga_horaria: number){
-        super(nome,id_user,carga_horaria);
+    constructor(cod_prof:string,  nome: string, id_user: string, carga_horaria_min: number){
+        super(nome,id_user,carga_horaria_min);
         this.cod_prof = cod_prof;
        
     }
@@ -106,19 +97,13 @@ export class Professor  extends User  /* implements IAtividade */{
         return this.cod_prof;
     } 
 
-       
-    VizualizarAtividades(atividade:[]):any{
-        for (let ativ of atividade){
-            return ativ
-        }
-
-    }
-
-    AulasMinistradas(){
-        return this.carga_horaria/60
-    }
 
     
+
+    AulasMinistradas(){
+        return this.carga_horaria_min/60
+    }
+
 
 }
 
@@ -132,7 +117,7 @@ interface IRepositoriaid_users{
     excluir(idUser:string, posicao:number): void;
 } 
 
-export class Curso  implements IRepositoriaid_users{
+export class Diretoria  implements IRepositoriaid_users{
     turma: Aluno[] = [];
     professores: Professor[] = []
     atividade:string[] = [];
@@ -230,8 +215,36 @@ export class Curso  implements IRepositoriaid_users{
         
     }
     
-    /* APARENTEMENTE Curso ESTÁ OK! */
+    
 }
+
+
+
+
+
+
+
+let Aluno1:Aluno = new Aluno("Jorge", "044",20);
+let Aluno2:Aluno = new Aluno("Davi", "002",30);
+let Aluno3:Aluno = new Aluno("Marcos", "039",50);
+
+let Prof1:Professor = new Professor('01',"João", "044", 20);
+let Prof2:Professor = new Professor('08',"Miguel", "002",15);
+
+
+let direcao:Diretoria = new Diretoria();
+
+direcao.inserir(Aluno1);
+direcao.inserir(Aluno2);
+direcao.inserir(Aluno3);
+direcao.addProfessor(Prof1);
+direcao.addProfessor(Prof2);
+console.table(direcao.turma);
+
+console.log(Aluno1.FrequenciadeAulas(1))
+
+direcao.addAtividades("A",'01')
+console.table(direcao.atividade)
 
 
 
