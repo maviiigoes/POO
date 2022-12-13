@@ -21,12 +21,13 @@ export class User {
         return this.nome;
     }  
     
-    TempoDePermanencia(horario_entrada:number,horario_saida:number):void{
+    TempoDePermanencia(horario_entrada:number,horario_saida:number):number{
         this.validarValor(horario_entrada);
         this.validarValor(horario_saida);
         this.VerificarHorario(horario_entrada,horario_saida)
         let total = horario_saida - horario_entrada
         this.carga_horaria_min = total
+        return total
     }
 
     qttAulasDia(horario_entrada:number,horario_saida:number):void{
@@ -63,7 +64,7 @@ export class Aluno extends User {
         
    } 
 
-   EhValido(id_user:string):boolean{
+   private EhValido(id_user:string):boolean{
        if (!isString(id_user)){ 
            throw new id_userError("id_user Invalida: " + id_user);
        }
@@ -72,7 +73,7 @@ export class Aluno extends User {
    }
 
 
-   FrequenciadeAulas(qttAulasDiaria:number):number{
+    FrequenciadeAulas(qttAulasDiaria:number):number{
     let minutosTotais = qttAulasDiaria *60;
     let qttAulasAssistidas = minutosTotais - this.carga_horaria_min;
     let qttfaltas = qttAulasAssistidas/60;
@@ -102,28 +103,26 @@ export class Professor  extends User{
 
     AulasMinistradas(){
         return this.carga_horaria_min/60
-    }
 
+            }
 
-}
-
-
+        }
 
 
 interface IRepositoriaid_users{
     inserir(usuario: User): void;
-    consultar(id_user: String): Aluno
+    consultar(id_user: String): User
     alterar(estudante: Aluno): void;
     excluir(idUser:string, posicao:number): void;
 } 
 
 export class Diretoria  implements IRepositoriaid_users{
-    turma: Aluno[] = [];
+    turma: User[] = [];
     professores: Professor[] = []
     atividade:string[] = [];
     
-    consultar(id_user: string): Aluno {
-        let id_userProcurada!: Aluno;
+    consultar(id_user: string): User {
+        let id_userProcurada!: User;
         for (let i of this.turma) {
             if (i.idUser == id_user) {
                 id_userProcurada = i;
@@ -138,16 +137,16 @@ export class Diretoria  implements IRepositoriaid_users{
 
 
 
-    inserir(aluno:Aluno): void {
+    inserir(User:User): void {
         try {
-            this.consultar(aluno.idUser);
+            this.consultar(User.idUser);
             throw new AlunoJaCadastradoError("Aluno já cadastrado!");
 
         } catch(e:any) {
             if(e instanceof AlunoJaCadastradoError){
                 throw e;
             }
-            this.turma.push(aluno);
+            this.turma.push(User);
         }
     }
 
@@ -224,7 +223,7 @@ export class Diretoria  implements IRepositoriaid_users{
 
 
 
-let Aluno1:Aluno = new Aluno("Jorge", "044",20);
+ /* let Aluno1:Aluno = new Aluno("Jorge", "044",20);
 let Aluno2:Aluno = new Aluno("Davi", "002",30);
 let Aluno3:Aluno = new Aluno("Marcos", "039",50);
 
@@ -245,9 +244,4 @@ console.log(Aluno1.FrequenciadeAulas(1))
 
 direcao.addAtividades("A",'01')
 console.table(direcao.atividade)
-
-
-
-
-
-
+  */
