@@ -6,7 +6,7 @@ const ip = fs.readFileSync("BasedeDadosDoSistema.txt", "utf-8")
 
 let input = prompt()
 
-let i = 0
+let i = 0;
 
 
 let t:Diretoria = new Diretoria("02","josefa","04",10); 
@@ -37,7 +37,8 @@ do{
             console.log("Erro não esperado.");
         }
     }
-    input("Operção finalizada!")
+    console.log("Digite 0 caso queira finalizar o processo...");
+        input("Operação finalizada!")
 } while (opcao != "0");
 
 
@@ -50,7 +51,7 @@ do{
 
 function CategoriaDiretor():void{
     console.log("Digite a opção desejada:")
-    console.log("1-CONSULTAR \n2- INSERIR ALUNO \n 3-EXCLUIR \n4- INSERIR PROFESSOR \n5-MOSTRAR INFORMAÇÕES COMPLETAS\n");
+    console.log("1-CONSULTAR \n2- INSERIR ALUNO \n 3-EXCLUIR \n4-MOSTRAR INFORMAÇÕES COMPLETAS\n");
     let o:number = Number(input("Digite sua opção:"));
     if(o == 1){
         let id = input("Digite o id do usuario que vc gostaria de consultar: ")
@@ -67,20 +68,14 @@ function CategoriaDiretor():void{
         let id = input("Digite o id do aluno: ")
         t.excluir(id)
     }if(o == 4){
-        let nome = input("Digite o nome do professor: ")
-        let id = input("Digite o id do professor: ")
-        let cod_prof:string = input("Digite o codigo do professor")
-        let carga_horaria:number = Number(input("Insira a carga horaria do professor:"));
-        let novo_prof:Professor = new Professor(cod_prof,nome,id,carga_horaria);
-        t.addProfessor(novo_prof)
-    }if(o== 5){
         console.log("Relatorio completo")
         console.table(t.turma)
            
+    
     }
 }
 
 function Exibir(id_user:string):void{
-    console.log(` Id: ${t.consultar(id_user).idUser}\n Nome: ${t.consultar(id_user).nameUser }\n Nota:${t.consultar(id_user)} `)
+    console.log(` Id: ${t.consultar(id_user).idUser}\n Nome: ${t.consultar(id_user).nameUser }\n } `);
 }
 
